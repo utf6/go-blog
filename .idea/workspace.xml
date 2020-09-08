@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="6d148792-e72c-4346-a9eb-d46d041ceb38" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="GOROOT" path="$PROJECT_DIR$/../../../../../Go" />
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="false" />
+  </component>
+  <component name="ProjectId" id="1hARsKrRk1FGHSE3AYTAvGdGv9g" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.language" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="475" y="300" key="#GOROOT" timestamp="1599527801045">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="475" y="300" key="#GOROOT/0.0.1366.728@0.0.1366.728" timestamp="1599527801045" />
+    <state x="475" y="200" key="#Go_Modules" timestamp="1599527831944">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="475" y="200" key="#Go_Modules/0.0.1366.728@0.0.1366.728" timestamp="1599527831944" />
+    <state x="137" y="21" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1599527843902">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="137" y="21" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1599527843902" />
+    <state x="570" y="226" key="EnvironmentVariablesDialog" timestamp="1599527831104">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="570" y="226" key="EnvironmentVariablesDialog/0.0.1366.728@0.0.1366.728" timestamp="1599527831104" />
+    <state x="463" y="122" key="FileChooserDialogImpl" timestamp="1599527799596">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="463" y="122" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1599527799596" />
+    <state x="184" y="8" key="SettingsEditor" timestamp="1599527749441">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="184" y="8" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1599527749441" />
+  </component>
+</project>
