@@ -98,7 +98,7 @@ func DeleteTag(id int) bool {
 编辑标签
  */
 func EditTag(id int, data interface{}) bool {
-	db.Model(&Tag{}).Where("id = ?", id).Update(data)
+	db.Model(&Tag{}).Where("id = ?", id).Updates(data)
 
 	return true
 }
