@@ -16,17 +16,17 @@ type Claims struct {
 }
 
 /**
-获取token
+生成token
  */
 func GenerateToken(username, password string) (string, error) {
 	nowTime := time.Now()
-	expireTime := nowTime.Add(2 * time.Hour)
+	expireTime := nowTime.Add(3 * time.Hour).Unix()
 
 	claims := Claims{
 		username,
 		password,
-		jwt.StandardClaims{
-			ExpiresAt: expireTime.Unix(),
+		jwt.StandardClaims {
+			ExpiresAt: expireTime,
 			Issuer: "go-blog",
 		},
 	}
@@ -37,6 +37,9 @@ func GenerateToken(username, password string) (string, error) {
 	return token, err
 }
 
+/**
+解析token
+ */
 func ParseToken(token string) (*Claims, error) {
 	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		return jwtSecret, nil

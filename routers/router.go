@@ -2,10 +2,11 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/utf6/go-blog/middleware"
+	"github.com/utf6/go-blog/routers/api"
+	v1 "github.com/utf6/go-blog/routers/api/v1"
 
 	"github.com/utf6/go-blog/pkg/setting"
-
-	"github.com/utf6/go-blog/routers/api/v1"
 )
 
 func InitRouter() *gin.Engine {
@@ -15,8 +16,10 @@ func InitRouter() *gin.Engine {
 	r.Use(gin.Recovery())
 
 	gin.SetMode(setting.RunMode)
+	r.POST("/auth", api.GetAuth)
 
 	apiv1 := r.Group("/api/v1")
+	apiv1.Use(middleware.JWT())
 	{
 		//获取标签列表
 		apiv1.GET("/tags", v1.GetTags)
@@ -39,6 +42,5 @@ func InitRouter() *gin.Engine {
 		apiv1.DELETE("/articles/:id", v1.DeleteArticle)
 
 	}
-
 	return r
 }

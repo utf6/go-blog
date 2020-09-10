@@ -3,9 +3,9 @@ module github.com/utf6/go-blog
 go 1.15
 
 require (
-	github.com/EDDYCJY/go-gin-example v0.0.0-20200505102242-63963976dee0
 	github.com/astaxie/beego v1.12.2
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/fvbock/endless v0.0.0-20170109170031-447134032cb6 // indirect
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-ini/ini v1.60.2
 	github.com/go-playground/validator/v10 v10.3.0 // indirect
@@ -21,13 +21,3 @@ require (
 	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect
 )
-
-//replace (
-//	github.com/utf6/go-blog/conf => /GoPath/src/github.com/uft6/go-blog/pkg/conf
-//	github.com/utf6/go-blog/middleware => /GoPath/src/github.com/uft6/go-blog/middleware
-//	github.com/utf6/go-blog/models => /GoPath/src/github.com/uft6/go-blog/models
-//	github.com/utf6/go-blog/pkg/e => /GoPath/src/github.com/uft6/go-blog/pkg/e
-//	github.com/utf6/go-blog/pkg/setting => /GoPath/src/github.com/uft6/go-blog/pkg/setting
-//	github.com/utf6/go-blog/pkg/util => /GoPath/src/github.com/uft6/go-blog/pkg/util
-//	github.com/utf6/go-blog/routers => /GoPath/src/github.com/uft6/go-blog/routers
-//)

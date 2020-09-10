@@ -6,9 +6,9 @@ import (
 	"github.com/unknwon/com"
 	"github.com/utf6/go-blog/models"
 	"github.com/utf6/go-blog/pkg/e"
+	"github.com/utf6/go-blog/pkg/logs"
 	"github.com/utf6/go-blog/pkg/setting"
 	"github.com/utf6/go-blog/pkg/util"
-	"log"
 	"net/http"
 )
 
@@ -26,7 +26,7 @@ func GetArticle(c *gin.Context) {
 
 	if valid.HasErrors() {
 		for _, err := range valid.Errors {
-			log.Printf("err.key: %s, err.message: %s", err.Key, err.Message)
+			logs.Info(err.Key, err.Message)
 		}
 	}
 
@@ -42,8 +42,6 @@ func GetArticle(c *gin.Context) {
 		"msg" : valid.Errors,
 		"data" : data,
 	})
-	
-
 }
 
 /**
@@ -73,7 +71,7 @@ func GetArticles(c *gin.Context)  {
 	code := e.INVALID_PARAMS
 	if valid.HasErrors() {
 		for _, err := range valid.Errors {
-			log.Printf("err.key: %s, err.message: %s", err.Key, err.Message)
+			logs.Info(err.Key, err.Message)
 		}
 	}
 
@@ -111,23 +109,23 @@ func AddArticle(c *gin.Context)  {
 	code := e.INVALID_PARAMS
 	if valid.HasErrors() {
 		for _, err := range valid.Errors {
-			log.Printf("err.key: %s, err.message: %s", err.Key, err.Message)
+			logs.Error(err.Key, err.Message)
 		}
-	}
-
-	if models.ExistTagByID(tagId) {
-		data := make(map[string]interface{})
-		data["tag_id"] = tagId
-		data["title"] = title
-		data["desc"] = desc
-		data["content"] = content
-		data["created_by"] = createdBy
-		data["state"] = state
-
-		models.AddArticle(data)
-		code = e.SUCCESS
 	} else {
-		code = e.ERROR_NOT_EXIST_TAG
+		if models.ExistTagByID(tagId) {
+			data := make(map[string]interface{})
+			data["tag_id"] = tagId
+			data["title"] = title
+			data["desc"] = desc
+			data["content"] = content
+			data["created_by"] = createdBy
+			data["state"] = state
+
+			models.AddArticle(data)
+			code = e.SUCCESS
+		} else {
+			code = e.ERROR_NOT_EXIST_TAG
+		}
 	}
 
 	c.JSON(http.StatusOK, gin.H{
@@ -170,30 +168,30 @@ func EditArticle(c *gin.Context)  {
 	code := e.INVALID_PARAMS
 	if valid.HasErrors() {
 		for _, err := range valid.Errors {
-			log.Printf("err.key: %s, err.message: %s", err.Key, err.Message)
-		}
-	}
-
-	if models.ExistArticleByID(id) {
-		if models.ExistTagByID(tagId) {
-			data := make(map[string]interface{})
-
-			if tagId > 0 {
-				data["tag_id"] = tagId
-
-			}
-			data["title"] = title
-			data["desc"] = desc
-			data["content"] = content
-			data["modified_by"] = modifiedBy
-
-			models.AddArticle(data)
-			code = e.SUCCESS
-		} else {
-			code = e.ERROR_NOT_EXIST_TAG
+			logs.Error(err.Key, err.Message)
 		}
 	} else {
-		code = e.ERROR_NOT_EXIST_ARTICLE
+		if models.ExistArticleByID(id) {
+			if models.ExistTagByID(tagId) {
+				data := make(map[string]interface{})
+
+				if tagId > 0 {
+					data["tag_id"] = tagId
+
+				}
+				data["title"] = title
+				data["desc"] = desc
+				data["content"] = content
+				data["modified_by"] = modifiedBy
+
+				models.AddArticle(data)
+				code = e.SUCCESS
+			} else {
+				code = e.ERROR_NOT_EXIST_TAG
+			}
+		} else {
+			code = e.ERROR_NOT_EXIST_ARTICLE
+		}
 	}
 
 	c.JSON(http.StatusOK, gin.H{
@@ -215,15 +213,15 @@ func DeleteArticle(c *gin.Context)  {
 	code := e.INVALID_PARAMS
 	if valid.HasErrors() {
 		for _, err := range valid.Errors {
-			log.Printf("err.key: %s, err.message: %s", err.Key, err.Message)
+			logs.Error(err.Key, err.Message)
 		}
-	}
-
-	if models.ExistArticleByID(id) {
-		models.DeleteArticle(id)
-		code = e.SUCCESS
 	} else {
-		code = e.ERROR_NOT_EXIST_ARTICLE
+		if models.ExistArticleByID(id) {
+			models.DeleteArticle(id)
+			code = e.SUCCESS
+		} else {
+			code = e.ERROR_NOT_EXIST_ARTICLE
+		}
 	}
 
 	c.JSON(http.StatusOK, gin.H{
