@@ -1,19 +1,14 @@
 package v1
 
 import (
+	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
 	"github.com/unknwon/com"
-	"net/http"
-
-	"github.com/astaxie/beego/validation"
-
-	"github.com/utf6/go-blog/pkg/e"
-
 	"github.com/utf6/go-blog/models"
-
-	"github.com/utf6/go-blog/pkg/util"
-
+	"github.com/utf6/go-blog/pkg/e"
 	"github.com/utf6/go-blog/pkg/setting"
+	"github.com/utf6/go-blog/pkg/util"
+	"net/http"
 )
 
 /**
@@ -36,7 +31,6 @@ func GetTags(c *gin.Context)  {
 	}
 
 	code := e.SUCCESS
-
 	data["lists"] = models.GetTags(util.GetPage(c), setting.PageSize, maps)
 	data["total"] = models.GetTagTotal(maps)
 
