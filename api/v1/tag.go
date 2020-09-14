@@ -104,7 +104,7 @@ func EditTag(c *gin.Context)  {
 	if valid.HasErrors() {
 		c.JSON(http.StatusExpectationFailed, gin.H{
 			"code" : code,
-			"msg" : valid.Errors,
+			"msg" : valid.Error("参数错误"),
 		})
 	}
 

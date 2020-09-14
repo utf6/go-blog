@@ -4,11 +4,11 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/utf6/go-blog/api"
+	v1 "github.com/utf6/go-blog/api/v1"
 	_ "github.com/utf6/go-blog/docs"
 	"github.com/utf6/go-blog/middleware"
 	"github.com/utf6/go-blog/pkg/setting"
-	"github.com/utf6/go-blog/routers/api"
-	v1 "github.com/utf6/go-blog/routers/api/v1"
 )
 
 func InitRouter() *gin.Engine {

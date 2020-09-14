@@ -114,3 +114,12 @@ func (article *Article) BeforeUpdate(scope *gorm.Scope) error {
 	return nil
 }
 
+/**
+删除所有文章
+ */
+func CleanAllArticle() bool {
+	db.Unscoped().Where("is_delete != ?", 0).Delete(&Article{})
+
+	return true
+}
+
