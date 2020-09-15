@@ -15,7 +15,7 @@ type Model struct {
 	ID         int `gorm:"primary_key" json:"id"`
 	CreatedOn  int `json:"created_on"`
 	ModifiedOn int `json:"modified_on"`
-	IsDelete int `json:"is_delete"`
+	DeleteOn int `json:"delete_on"`
 }
 
 func init() {
@@ -89,7 +89,7 @@ func deleteCallback(scope *gorm.Scope)  {
 			extraOption = fmt.Sprintf("%s", str)
 		}
 
-		isDeleteField, hasIsDeleteField := scope.FieldByName("IsDelete")
+		isDeleteField, hasIsDeleteField := scope.FieldByName("DeleteOn")
 
 		if !scope.Search.Unscoped && hasIsDeleteField {
 			scope.Raw(fmt.Sprintf(

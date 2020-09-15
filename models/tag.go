@@ -102,7 +102,7 @@ func EditTag(id int, data interface{}) bool {
 清除所有tag
  */
 func CleanAllTag() bool {
-	db.Unscoped().Where("is_delete != ?", 0).Delete(&Tag{})
+	db.Unscoped().Where("delete_on != ?", 0).Delete(&Tag{})
 
 	return true
 }
