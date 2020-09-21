@@ -1,5 +1,7 @@
 package models
 
+import "github.com/jinzhu/gorm"
+
 type Tag struct {
 	Model
 
@@ -9,100 +11,115 @@ type Tag struct {
 	State int `json:"state"`
 }
 
-//func (tag *Tag) BeforeCreate (scope *gorm.Scope) error {
-//	scope.SetColumn("CreatedOn", time.Now().Unix())
-//
-//	return nil
-//}
-//
-//func (tag *Tag) BeforeUpdate(scope *gorm.Scope) error {
-//	scope.SetColumn("ModifiedOn", time.Now().Unix())
-//
-//	return nil
-//}
-
 /**
 获取标签
  */
-func GetTags(pageNum int, pageSize int, maps interface{}) (tags []Tag)  {
-	db.Where(maps).Offset(pageNum).Limit(pageSize).Find(&tags)
+func GetTags(pageNum int, pageSize int, maps interface{}) ([]Tag, error)  {
+	var (
+		tags []Tag
+		err error
+	)
 
-	return
+	err = db.Where(maps).Find(&tags).Error
+	
+	if pageSize > 0 && pageNum > 0 {
+		err = db.Where(maps).Find(&tags).Offset(pageNum).Limit(pageSize).Error
+	}
+
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+
+	return tags, nil
 }
 
 /**
 获取标签总数
  */
-func GetTagTotal(maps interface{}) (count int)  {
-	db.Model(&Tag{}).Where(maps).Count(&count)
+func GetTagTotal(maps interface{}) (int, error)  {
+	var count int
+	if err := db.Model(&Tag{}).Where(maps).Count(&count).Error; err != nil {
+		return 0, err
+	}
 
-	return
+	return count, nil
 }
 
 /**
 判断标签名是否存在
  */
-func ExistTagByName(name string) bool  {
+func ExistTagByName(name string) (bool, error)  {
 	var tag Tag
-	db.Select("id").Where("name=?", name).First(&tag)
 
-	if tag.ID > 0 {
-		return true
+	err := db.Select("id").Where("name = ? AND deleted_on = ?", name, 0).First(&tag).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return false, err
 	}
 
-	return false
+	if tag.ID > 0 {
+		return true, nil
+	}
+
+	return false, nil
 }
 
 /**
 添加标签
  */
-func AddTag(name string, state int, createdBy string) bool {
-	db.Create(&Tag{
+func AddTag(name string, state int, createdBy string) error {
+	tag := Tag{
 		Name: name,
 		State: state,
 		CreatedBy: createdBy,
-	})
+	}
 
-	return true
+	if err := db.Create(&tag).Error; err != nil {
+		return err
+	}
+
+	return nil
 }
 
 /**
 通过id判断用户是否存在
  */
-func ExistTagByID(id int) bool {
-	var tag Tag
-	db.Select("id").Where("id = ?", id).First(&tag)
-
-	if tag.ID > 0 {
-		return true
+func ExistTagByID(id int, data interface{}) error {
+	if err := db.Model(&Tag{}).Where("id = ? AND deleted_no = ?", id, 0).Updates(data).Error; err != nil {
+		return err
 	}
 
-	return false
+	return nil
 }
 
 /**
 删除标签
  */
-func DeleteTag(id int) bool {
-	db.Where("id = ?", id).Delete(&Tag{})
+func DeleteTag(id int) (bool, error) {
+	if err := db.Where("id = ?", id).Delete(&Tag{}).Error; err != nil {
+		return false,err
+	}
 
-	return true
+	return true, nil
 }
 
 /**
 编辑标签
  */
-func EditTag(id int, data interface{}) bool {
-	db.Model(&Tag{}).Where("id = ?", id).Updates(data)
+func EditTag(id int, data interface{}) (bool, error) {
+	if err := db.Model(&Tag{}).Where("id = ?", id).Updates(data).Error; err != nil {
+		return false,err
+	}
 
-	return true
+	return true, nil
 }
 
 /**
 清除所有tag
  */
-func CleanAllTag() bool {
-	db.Unscoped().Where("delete_on != ?", 0).Delete(&Tag{})
+func CleanAllTag() (bool, error) {
+	if err := db.Unscoped().Where("delete_on != ?", 0).Delete(&Tag{}).Error; err != nil {
+		return false, err
+	}
 
-	return true
+	return true, nil
 }

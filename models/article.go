@@ -1,23 +1,18 @@
 package models
 
-import (
-	"github.com/jinzhu/gorm"
-
-	"time"
-)
-
 type Article struct {
 	Model
 
 	TagID int `json:"tag_id" gorm:"index"`
-	Tag Tag `json:"tag"`
+	Tag   Tag `json:"tag"`
 
-	Title string `json:"title"`
-	Desc string `json:"desc"`
-	Content string `json:"content"`
-	CreatedBy string `json:"created_by"`
-	ModifiedBy string `json:"modified_by"`
-	State int `json:"state"`
+	Title         string `json:"title"`
+	Desc          string `json:"desc"`
+	Content       string `json:"content"`
+	CreatedBy     string `json:"created_by"`
+	ModifiedBy    string `json:"modified_by"`
+	State         int    `json:"state"`
+	CoverImageUrl string `json:"cover_image_url"`
 }
 
 /**
@@ -65,51 +60,44 @@ func GetArticle(id int) (article Article) {
 /**
 编辑文章
  */
-func EditArticle(id int, data interface{}) bool {
-	db.Model(&Article{}).Where("id = ?", id).Updates(data)
+func EditArticle(id int, data interface{}) error {
 
-	return true
+	if err := db.Model(&Article{}).Where("id = ?", id).Updates(data).Error; err != nil {
+		return err
+	}
+
+	return nil
 }
 
 /**
 添加文章
  */
-func AddArticle(data map[string]interface{}) bool {
-	db.Create(&Article{
+func AddArticle(data map[string]interface{}) error {
+	article := Article{
 		TagID: data["tag_id"].(int),
 		Title: data["title"].(string),
 		Desc: data["desc"].(string),
 		Content: data["content"].(string),
 		CreatedBy: data["created_by"].(string),
 		State: data["state"].(int),
-	})
+		CoverImageUrl: data["cover_image_url"].(string),
+	}
 
-	return true
-}
-
-/**
-删除文章
- */
-func DeleteArticle(id int) bool {
-	db.Where("id = ?", id).Delete(Article{})
-
-	return true
-}
-
-/**
-创建之前填充 CreatedOn
- */
-func (article *Article) BeforeCreate(scope *gorm.Scope) error {
-	scope.SetColumn("CreatedOn", time.Now().Unix())
+	if err := db.Create(&article).Error; err != nil {
+		return  err
+	}
 
 	return nil
 }
 
 /**
-更新之前填充 ModifiedOn
+删除文章
  */
-func (article *Article) BeforeUpdate(scope *gorm.Scope) error {
-	scope.SetColumn("ModifiedOn", time.Now().Unix())
+func DeleteArticle(id int) error {
+
+	if err := db.Where("id = ?", id).Delete(Article{}).Error; err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -117,9 +105,11 @@ func (article *Article) BeforeUpdate(scope *gorm.Scope) error {
 /**
 删除所有文章
  */
-func CleanAllArticle() bool {
-	db.Unscoped().Where("delete_no != ?", 0).Delete(&Article{})
+func CleanAllArticle() error {
+	if err := db.Unscoped().Where("delete_no != ?", 0).Delete(&Article{}).Error; err != nil {
+		return err
+	}
 
-	return true
+	return nil
 }
 
