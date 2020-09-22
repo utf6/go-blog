@@ -46,5 +46,6 @@ func InitRouter() *gin.Engine {
 		apiv1.DELETE("/articles/:id", v1.DeleteArticle)
 
 	}
+	r.Run(":8000")
 	return r
 }
