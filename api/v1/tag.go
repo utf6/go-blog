@@ -15,8 +15,9 @@ import (
 获取文章多个标签
  */
 func GetTags(c *gin.Context)  {
-	name := c.Query("name")
 
+	name := c.Query("name")
+	
 	maps := make(map[string]interface{})
 	data := make(map[string]interface{})
 
@@ -31,8 +32,8 @@ func GetTags(c *gin.Context)  {
 	}
 
 	code := e.SUCCESS
-	data["lists"] = models.GetTags(util.GetPage(c), setting.PageSize, maps)
-	data["total"] = models.GetTagTotal(maps)
+	data["lists"] = models.GetArticles(util.GetPage(c), setting.AppSetting.PageSize, maps)
+	data["total"] = models.GetArticleTotal(maps)
 
 	c.JSON(http.StatusOK, gin.H{
 		"code" : code,
@@ -62,11 +63,11 @@ func AddTag(c *gin.Context)  {
 
 	code := e.INVALID_PARAMS
 	if ! valid.HasErrors() {
-		if !models.ExistTagByName(name) {
+		if models.ExistTagByName(name) {
+			code = e.ERROR_EXIST_TAG
+		} else {
 			code = e.SUCCESS
 			models.AddTag(name, state, createdBy)
-		} else {
-			code = e.ERROR_EXIST_TAG
 		}
 	}
 

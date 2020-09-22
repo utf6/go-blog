@@ -2,6 +2,7 @@ package logs
 
 import (
 	"fmt"
+	_ "github.com/utf6/go-blog/pkg/file"
 	"log"
 	"os"
 	"path/filepath"

@@ -48,19 +48,19 @@ func GetTagTotal(maps interface{}) (int, error)  {
 /**
 判断标签名是否存在
  */
-func ExistTagByName(name string) (bool, error)  {
+func ExistTagByName(name string) bool  {
 	var tag Tag
 
 	err := db.Select("id").Where("name = ? AND deleted_on = ?", name, 0).First(&tag).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return false, err
+		return false
 	}
 
 	if tag.ID > 0 {
-		return true, nil
+		return true
 	}
 
-	return false, nil
+	return false
 }
 
 /**
@@ -83,12 +83,12 @@ func AddTag(name string, state int, createdBy string) error {
 /**
 通过id判断用户是否存在
  */
-func ExistTagByID(id int, data interface{}) error {
-	if err := db.Model(&Tag{}).Where("id = ? AND deleted_no = ?", id, 0).Updates(data).Error; err != nil {
-		return err
+func ExistTagByID(id int) bool {
+	if err := db.Model(&Tag{}).Where("id = ? AND deleted_no = ?", id, 0).Find(&id).Error; err != nil {
+		return false
 	}
 
-	return nil
+	return true
 }
 
 /**
