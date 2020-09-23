@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"github.com/utf6/go-blog/pkg/logs"
 	"github.com/utf6/go-blog/pkg/setting"
+	"log"
 	"time"
 )
 
@@ -22,7 +22,8 @@ func Setup()  {
 	var err error
 
 	db, err = gorm.Open(
-		setting.DatabaseSetting.Type, fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
+		setting.DatabaseSetting.Type,
+		fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		setting.DatabaseSetting.User,
 		setting.DatabaseSetting.Password,
 		setting.DatabaseSetting.Host,
@@ -30,7 +31,7 @@ func Setup()  {
 		))
 
 	if err != nil {
-		logs.Error(err)
+		log.Fatalf("model setup err: %s", setting.DatabaseSetting.Type)
 	}
 
 	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
@@ -45,9 +46,7 @@ func Setup()  {
 	db.DB().SetMaxOpenConns(100)
 }
 
-/**
-"%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
- */
+// CloseDB closes database connection (unnecessary)
 func CloseDB() {
 	defer db.Close()
 }
@@ -61,13 +60,13 @@ func updateTimeStampForCreateCallback(scope *gorm.Scope)  {
 
 		if createTimeField, ok := scope.FieldByName("CreatedOn"); ok {
 			if createTimeField.IsBlank {
-				createTimeField.Set(nowTime)
+				_ = createTimeField.Set(nowTime)
 			}
 		}
 
 		if modifyTimeField, ok := scope.FieldByName("ModifiedOn"); ok {
 			if modifyTimeField.IsBlank {
-				modifyTimeField.Set(nowTime)
+				_ = modifyTimeField.Set(nowTime)
 			}
 		}
 	}
@@ -83,6 +82,7 @@ func deleteCallback(scope *gorm.Scope)  {
 		isDeleteField, hasIsDeleteField := scope.FieldByName("DeleteOn")
 
 		if !scope.Search.Unscoped && hasIsDeleteField {
+			//goland:noinspection ALL
 			scope.Raw(fmt.Sprintf(
 				"UPDATE %V SET %v=%v%v%v",
 				scope.QuotedTableName(),

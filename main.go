@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/utf6/go-blog/models"
+	"github.com/utf6/go-blog/pkg/logs"
 	"github.com/utf6/go-blog/pkg/setting"
 	"github.com/utf6/go-blog/routers"
 	"log"
@@ -11,6 +13,13 @@ import (
 	"os/signal"
 	"time"
 )
+
+func init() {
+	setting.SetUp()
+	models.Setup()
+	logs.Setup()
+
+}
 
 // @title Go-Blog API
 // @version 1.0
