@@ -1,5 +1,7 @@
 package models
 
+import "github.com/jinzhu/gorm"
+
 type Article struct {
 	Model
 
@@ -41,20 +43,28 @@ func GetArticleTotal(maps interface{}) (count int) {
 /**
 获取文章列表
  */
-func GetArticles(pageNum int, pageSize int, maps interface{}) (articles []Article) {
-	db.Preload("Tag").Where(maps).Offset(pageNum).Limit(pageSize).Find(&articles)
+func GetArticles(pageNum int, pageSize int, maps interface{}) ([]*Article, error) {
+	var articles []*Article
 
-	return
+	err := db.Preload("Tag").Where(maps).Offset(pageNum).Limit(pageSize).Find(&articles).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+
+	return articles, nil
 }
 
 /**
 获取文章，关联标签
  */
-func GetArticle(id int) (article Article) {
-	db.Where("id = ?", id).First(&article)
-	db.Model(&article).Related(&article.Tag)
+func GetArticle(id int) (*Article, error) {
+	var article Article
+	err := db.Where("id = ? AND deleted_on = ? ", id, 0).First(&article).Related(&article.Tag).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
 
-	return
+	return &article, nil
 }
 
 /**
