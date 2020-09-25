@@ -9,6 +9,7 @@ import (
 	_ "github.com/utf6/go-blog/docs"
 	"github.com/utf6/go-blog/middleware"
 	"github.com/utf6/go-blog/pkg/export"
+	"github.com/utf6/go-blog/pkg/qrcode"
 	"github.com/utf6/go-blog/pkg/setting"
 	"net/http"
 )
@@ -24,6 +25,7 @@ func InitRouter() *gin.Engine {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.POST("/upload", api.UploadImage)
 	r.StaticFS("/export", http.Dir(export.GetExcelFullPath()))
+	r.StaticFS("/qrcode", http.Dir(qrcode.GetQrCodeFullPath()))
 
 	apiv1 := r.Group("/api/v1")
 	apiv1.Use(middleware.JWT())
@@ -49,6 +51,7 @@ func InitRouter() *gin.Engine {
 		apiv1.GET("/articles/:id", v1.GetArticle)
 		//删除文章
 		apiv1.DELETE("/articles/:id", v1.DeleteArticle)
+		apiv1.POST("/articles/posters", v1.ArticlePoster)
 
 	}
 	r.Run(":8000")
