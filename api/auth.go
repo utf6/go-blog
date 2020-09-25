@@ -33,7 +33,6 @@ func GetAuth(c *gin.Context) {
 	if ok {
 		isExist := models.CheckAuth(username, password)
 
-
 		if isExist {
 			token, err := util.GenerateToken(username, password)
 

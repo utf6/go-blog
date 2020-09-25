@@ -17,7 +17,7 @@ var MsgFlags = map[int]string{
 	ERROR_UPLOAD_CHECK_IMAGE_FORMAT:	"校验图片错误，图片格式或大小有问题",
 	ERROR_COUNT_ARTICLE_FAIL:				"统计文章失败",
 	ERROR_GET_ARTICLE_FAIL:					"获取文章失败",
-
+	ERROR_EXPORT_TAG_FAIL:				"导出标签错误",
 }
 
 func GetMsg(code int) string {

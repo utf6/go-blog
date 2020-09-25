@@ -94,12 +94,12 @@ func LikeDeletes(key string) error {
 	conn := RedisConn.Get()
 	defer conn.Close()
 
-	keys, err := redis.String(conn.Do("KEYS", "*"+key+"*"))
+	keys, err := redis.Strings(conn.Do("KEYS", "*"+key+"*"))
 	if err != nil {
 		return err
 	}
 
-	for _, key = range keys{
+	for _, key = range keys {
 		_, err = Delete(key)
 		if err != nil {
 			return err

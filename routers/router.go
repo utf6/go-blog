@@ -8,7 +8,9 @@ import (
 	v1 "github.com/utf6/go-blog/api/v1"
 	_ "github.com/utf6/go-blog/docs"
 	"github.com/utf6/go-blog/middleware"
+	"github.com/utf6/go-blog/pkg/export"
 	"github.com/utf6/go-blog/pkg/setting"
+	"net/http"
 )
 
 func InitRouter() *gin.Engine {
@@ -21,6 +23,7 @@ func InitRouter() *gin.Engine {
 	r.POST("/auth", api.GetAuth)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.POST("/upload", api.UploadImage)
+	r.StaticFS("/export", http.Dir(export.GetExcelFullPath()))
 
 	apiv1 := r.Group("/api/v1")
 	apiv1.Use(middleware.JWT())
@@ -33,6 +36,8 @@ func InitRouter() *gin.Engine {
 		apiv1.PUT("/tags/:id", v1.EditTag)
 		//删除标签
 		apiv1.DELETE("/tags/:id", v1.DeleteTag)
+		//导出标签
+		apiv1.POST("/tags/export", v1.ExportTag)
 
 		//获取文章列表
 		apiv1.GET("/articles", v1.GetArticles)
