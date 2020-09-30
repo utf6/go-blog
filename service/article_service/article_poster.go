@@ -23,7 +23,7 @@ func NewArticlePoser(posterName string, article *Article, qr *qrcode.QrCode) *Ar
 	}
 }
 
-func GetPoserFlag() string {
+func GetPosterFlag() string {
 	return "poster"
 }
 
@@ -32,7 +32,7 @@ func (a *ArticlePoster) CheckMergedImage(path string) bool {
 		return false
 	}
 
-	return false
+	return true
 }
 
 func (a *ArticlePoster) OpenMergedImage(path string) (*os.File, error) {

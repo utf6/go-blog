@@ -91,7 +91,7 @@ func (q *QrCode) Encode(path string) (string, string, error) {
 	name := GetQrCodeFileName(q.URL) + q.GetQrCodeExt()
 	src := path + name
 
-	if file.CheckNotExist(src) {
+	if file.CheckNotExist(src) == true {
 		code, err := qr.Encode(q.URL, q.Level, q.Mode)
 		if err != nil {
 			return "", "", err
@@ -113,5 +113,5 @@ func (q *QrCode) Encode(path string) (string, string, error) {
 			return "", "", nil
 		}
 	}
-	return path, name, nil
+	return name, path, nil
 }

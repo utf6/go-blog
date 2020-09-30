@@ -260,14 +260,14 @@ func DeleteArticle(c *gin.Context)  {
 }
 
 func ArticlePoster(c *gin.Context) {
-	appG := app.Gin{c}
+	appG := app.Gin{	c}
 	article := &article_service.Article{}
 	qr := qrcode.NewQrCode(QRCODE_URL, 300, 300, qr.M, qr.Auto)
 
-	posterName := qrcode.GetQrCodeFileName(qr.URL) + qr.GetQrCodeExt()
+	posterName := article_service.GetPosterFlag() + "-" + qrcode.GetQrCodeFileName(qr.URL) + qr.GetQrCodeExt()
 	articlePoster := article_service.NewArticlePoser(posterName, article, qr)
 	articlePosterBgService := article_service.NewArticlePosterBg(
-		"bg.jpg",
+		"public/image/bg.jpg",
 		articlePoster,
 		&article_service.Rect{
 			X0: 0,
